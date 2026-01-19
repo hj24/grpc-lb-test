@@ -4,6 +4,12 @@
 
 本项目使用自定义的 Go gRPC server 和 client，在响应中返回 Pod 的 hostname、Pod 名称和 IP，方便观察负载分布。
 
+## 前置依赖
+
+1. kind: `brew install kind`
+2. grpcurl: `brew install grpcurl`
+3. protoc 28.3
+
 ## 项目结构
 
 ```
@@ -104,6 +110,19 @@ make run-client
 ```bash
 # 自动启动 server、运行 client、然后清理
 make test-local
+```
+
+### 本地调试 kind
+
+```bash
+kubectl get svc -n test
+kubectl get pod -n test
+kubectl logs grpc-server-xxxxxxxxxx-xxxxx -f -n test
+kubectl port-forward svc/grpc-server -n test 9000:9000
+
+grpcurl -plaintext localhost:9000 list
+grpcurl -plaintext localhost:9000 describe echo.Echo
+grpcurl -plaintext -d '{"message": "hello"}' localhost:9000 echo.Echo/Echo
 ```
 
 ## 构建流程详解

@@ -1,0 +1,13 @@
+# 忽略不需要的文件
+*.md
+.git
+.gitignore
+vendor/
+README.md
+
+# 注意：不要忽略以下文件，它们需要在镜像中
+# go.mod
+# go.sum
+# server/*.go
+# server/proto/*.pb.go
+

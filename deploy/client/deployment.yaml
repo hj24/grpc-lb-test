@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-client
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-client
+  template:
+    metadata:
+      labels:
+        app: grpc-client
+    spec:
+      containers:
+      - name: grpc-client
+        image: grpc-lb-test-client:latest
+        imagePullPolicy: Never  # For kind clusters
+        args:
+        - "-target=grpc-server.test.svc.cluster.local:9000"
+        - "-total=1000"
+        - "-concurrency=50"
+        - "-conns=3"
+        - "-loop=true"
+        - "-interval=30s"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+      restartPolicy: Always
+

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package echo;
+
+option go_package = "github.com/hj24/grpc-lb-test/protogen/echo";
+
+// Echo 服务定义
+service Echo {
+  // Echo 方法：接收消息并返回包含 hostname 的响应
+  rpc Echo (EchoRequest) returns (EchoResponse);
+}
+
+// 请求消息
+message EchoRequest {
+  string message = 1;
+}
+
+// 响应消息
+message EchoResponse {
+  string message = 1;
+  string hostname = 2;  // Pod 的 hostname
+  string pod_name = 3;  // Pod 名称（从环境变量获取）
+  string pod_ip = 4;    // Pod IP（从环境变量获取）
+}
+
